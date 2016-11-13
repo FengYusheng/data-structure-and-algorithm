@@ -17,3 +17,11 @@ Redundant encoding
 scatterplog(散点图)
 
 > 颜色，图形的使用（避免色盲者）
+
+
+#　大数据技术
+
+《网络中心导论》
+《网络科学导论》
+
+kdb期刊
