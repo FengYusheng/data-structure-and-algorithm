@@ -131,6 +131,32 @@ void delete_node(Node * const head, const int key) {
     return;
 }
 
+void sort(Node * const head) {
+    Node *current = NULL;
+    Node *next_node = NULL;
+    int i = 0, valueToInsert=0, temp = 0;
+
+    if (NULL == head || NULL == head->next) {
+        printf("The link is empty.\n");
+        return;
+    }
+
+    current = head->next;
+    next_node = current->next;
+
+    while (next_node != NULL) {
+        valueToInsert = next_node->data;
+        while (current != next_node) {
+            if (current->data <= valueToInsert) {
+                current = current->next;
+                continue;
+            }
+        }
+    }
+
+    return;
+}
+
 // Node* search(Node * const head, const int key) {
 //
 // }
@@ -142,11 +168,12 @@ int main() {
     init(&head);
     destroy(&head);
     destroy(&head);
-    /*if (NULL == head) {
+
+    if (NULL == head) {
         printf("head is NULL\n");
     } else {
         printf("head hasn't been destroied\n");
-    }*/
+    }
 
     init(&head);
     insert_node(head, 1, 1, 1);
@@ -160,5 +187,6 @@ int main() {
     display(head);
     destroy(&head);
     display(head);
+
     return 0;
 }
