@@ -134,7 +134,7 @@ void delete_node(Node * const head, const int key) {
 void sort(Node * const head) {
     Node *current = NULL;
     Node *next_node = NULL;
-    int i = 0, valueToInsert=0, temp = 0;
+    int valueToInsert=0, temp = 0;
 
     if (NULL == head || NULL == head->next) {
         printf("The link is empty.\n");
@@ -151,18 +151,64 @@ void sort(Node * const head) {
                 current = current->next;
                 continue;
             }
+
+            temp = current->data;
+            current->data = valueToInsert;
+            next_node->data = temp;
+
+            temp = current->key;
+            current->key = next_node->key;
+            next_node->key = temp;
         }
+
+
+        next_node = next_node->next;
+        current = head;
     }
 
     return;
 }
 
-// Node* search(Node * const head, const int key) {
-//
-// }
+Node* search(Node * const head, const int key) {
+    Node *current = head;
+    if(NULL == head) {
+        return NULL;
+    }
+
+    while (current->next != NULL) {
+        current = current->next;
+        if (key == current->key) {
+            return current;
+        }
+
+    }
+
+    return NULL;
+}
+
+void reverse(Node **head) {
+    Node *prev = NULL;
+    Node *current = NULL;
+    Node *next = NULL;
+
+    if (NULL == *head) {
+        return;
+    }
+
+    current = (*head)->next;
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    (*head)->next = prev;
+}
 
 int main() {
     Node *head = NULL;
+    Node *tmp = NULL;
     init(&head);
     display(head);
     init(&head);
@@ -183,6 +229,21 @@ int main() {
     insert_node(head, 2, 2, 1);
     insert_node(head, 4, 4, 1);
     display(head);
+    printf("Sort the link: \n");
+    sort(head);
+    display(head);
+
+    tmp = search(head, 3);
+    if (tmp != NULL) {
+        printf("Node %d , (%d, %d)\n", 3, tmp->key, tmp->data);
+    } else {
+        printf("Node %d isn't in the link\n", 3);
+    }
+
+    printf("Reverse the link: ");
+    reverse(&head);
+    display(head);
+
     delete_node(head, 4);
     display(head);
     destroy(&head);
