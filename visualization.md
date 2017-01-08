@@ -3,6 +3,10 @@
 
 [color select](http://colorbrewer2.org/)
 
+[booc.io](https://booc.io/)
+
+[PKU visualiztion blog](vis.pku.edu.cn/blog)
+
 # D3:data-drive document
 visualiztion tools: [d3](d3js.org), opengl(c/c++), webgl, latest EXCEL, gephi
 
