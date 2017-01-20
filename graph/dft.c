@@ -133,20 +133,91 @@ void add_edge(const int r, const int c)
 
     edges[r][c] = 1;
     edges[c][r] = 1;
-    
+
     return;
 }
 
 void display_vertex(const int index)
 {
+    if (index<=NONE || index>=SIZE)
+    {
+        printf("%s: invalid index.\n", __func__, index);
+        return;
+    }
 
+    printf("%c ", vertics[index]->label);
+}
+
+int get_unvisited_adjacent(const int index)
+{
+    int i = 0, ret = NONE;
+
+    if (index<=NONE || index>=SIZE)
+    {
+        printf("%s: invalid index %d.\n", __func__, index);
+        return ret;
+    }
+
+    for (i=0; i<SIZE; i++)
+    {
+        if (1==edges[index][i] && false==vertics[i]->visited)
+        {
+            ret = i;
+            break;
+        }
+    }
+
+    return ret;
+}
+
+void dft()
+{
+    int i = 0, j = 0;
+
+    display_vertex(i);
+    vertics[i]->visited = true;
+    push(i);
+
+    while(!isEmpty())
+    {
+        i = pop();
+        j = get_unvisited_adjacent(i);
+        if (j!=NONE)
+        {
+            push(i);
+            display_vertex(j);
+            vertics[j]->visited = true;
+            push(j);
+        }
+    }
+    printf("\n");
+
+    for (i=0; i<SIZE; i++)
+    {
+        vertics[i]->visited = false;
+    }
+
+    return;
 }
 
 int main()
 {
-    int i = 0, j = 0;
+    init_edges();
+    add_vertex('S');
+    add_vertex('A');
+    add_vertex('B');
+    add_vertex('C');
+    add_vertex('D');
 
+    add_edge(0, 1);
+    add_edge(0, 2);
+    add_edge(0, 3);
+    add_edge(1, 4);
+    add_edge(2, 4);
+    add_edge(3, 4);
 
+    printf("depth first travel: ");
+    dft();
 
     return 0;
 }
