@@ -3,6 +3,10 @@
 #include <stdbool.h>
 
 
+#define SIZE 5
+#define NONE -1
+
+
 typedef struct _vertex
 {
     unsigned char label;
@@ -15,12 +19,10 @@ typedef struct _queue
     int rear;
     int count;
     int queue[SIZE];
-} Queue
-
-#define SIZE 5
-#define NONE -1
+} Queue;
 
 
+static int pos = 0;
 static Vertex *vertics[SIZE];
 static int edges[SIZE][SIZE];
 
@@ -78,19 +80,57 @@ bool isFull(Queue *const q)
     return ret;
 }
 
-void enqueue(Queue *const q, const unsigned char label)
+void enqueue(Queue *const q, const int index)
 {
+    int rear = q->rear;
 
+    if (isFull(q))
+    {
+        printf("%s: the queue is full.\n", __func__);
+        return;
+    }
+
+    rear++;
+    rear %= SIZE;
+    q->queue[rear] = index;
+    q->rear = rear;
+    q->count++;
 }
 
-void dequeue(Queue *const q)
+int dequeue(Queue *const q)
 {
+    int front = q->front;
+    int ret = NONE;
 
+    if (isEmpty(q))
+    {
+        printf("%s: queue is empty.\n", __func__);
+        return ret;
+    }
+
+    front++;
+    front %= SIZE;
+    ret = q->queue[front];
+    q->queue[front] = NONE;
+    q->front = front;
+    q->count--;
+
+    return ret;
+}
+
+void display_queue(Queue *const q)
+{
+    int i = 0;
+    for (i=0; i<SIZE; i++)
+    {
+        printf("%d ", q->queue[i]);
+    }
+    printf("\n");
 }
 
 void init_edge()
 {
-    int i = 0, int j = 0;
+    int i = 0, j = 0;
 
     for (i=0; i<SIZE; i++)
     {
@@ -103,8 +143,130 @@ void init_edge()
     return;
 }
 
-int main()
+void add_vertex(const unsigned char label)
+{
+    Vertex *vertex = NULL;
+    if (pos >= SIZE)
+    {
+        printf("%s: too many vertics.\n", __func__);
+        return;
+    }
+
+    vertex = (Vertex*)malloc(sizeof(Vertex));
+    if (NULL == vertex)
+    {
+        printf("%s: No memory space to allocate vertex.\n", __func__);
+        return;
+    }
+
+    vertex->label = label;
+    vertex->visited = false;
+    vertics[pos++] = vertex;
+
+    return;
+}
+
+void add_edge(const int r, const int c)
+{
+    if (r <= NONE || r >= SIZE)
+    {
+        printf("%s: r(%d) is invalid.\n", __func__, r);
+        return;
+    }
+
+    if (c <= NONE || c >= SIZE)
+    {
+        printf("%s: c(%d) is invalid.\n", __func__, c);
+        return;
+    }
+
+    edges[r][c] = 1;
+    edges[c][r] = 1;
+
+    return;
+}
+
+int get_unvisited_adjacent(const int index)
+{
+    int ret = NONE, i = 0;
+
+    if (index >= SIZE || index <= NONE)
+    {
+        printf("%s: index(%d) is invalid.\n", __func__, index);
+        return ret;
+    }
+
+    for (i=0; i<SIZE; i++)
+    {
+        if (edges[index][i] && false == vertics[i]->visited)
+        {
+            ret = i;
+            break;
+        }
+    }
+
+    return ret;
+}
+
+void display(const int index)
+{
+    if (index >= SIZE || index <= NONE)
+    {
+        printf("%s: index(%d) is invalid.\n", __func__, index);
+        return;
+    }
+
+    printf("%c ", vertics[index]->label);
+    vertics[index]->visited = true;
+
+    return;
+}
+
+void bft()
 {
     Queue queue;
+    int i = 0, j = 0;
+
+    init_queue(&queue);
+
+    display(i);
+    enqueue(&queue, i);
+
+    while (!isEmpty(&queue))
+    {
+        i = dequeue(&queue);
+        j = get_unvisited_adjacent(i);
+        if (j != NONE)
+        {
+            display(j);
+            enqueue(&queue, i);
+            enqueue(&queue, j);
+        }
+    }
+
+    printf("\n");
+    return;
+}
+
+int main()
+{
+    add_vertex('S');
+    add_vertex('A');
+    add_vertex('B');
+    add_vertex('C');
+    add_vertex('D');
+    add_vertex('E');
+
+    init_edge();
+    add_edge(0, 1);
+    add_edge(0, 2);
+    add_edge(0, 3);
+    add_edge(1, 4);
+    add_edge(2, 4);
+    add_edge(3, 4);
+
+    printf("Breadth First Travel: ");
+    bft();
+
     return 0;
 }
