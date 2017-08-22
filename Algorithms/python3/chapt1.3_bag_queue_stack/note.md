@@ -6,9 +6,9 @@
 
 ### 定容栈应当支持的操作
 
-    FixCapacityStack(int cap)  #　创建一个容量为cap的空栈
+    FixCapacityStack(int cap)           #　创建一个容量为cap的空栈
 
-    void push(String item)      　　　　　# 添加一个字符串
+    void push(String item)      　　　　 # 添加一个字符串
 
     String pop()                        # 删除最近添加的字符串
 
