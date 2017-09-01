@@ -60,13 +60,43 @@ class Stack():
 class Bag():
     """
     iterators & generators: http://anandology.com/python-practice-book/iterators.html
+
+    In python3, you need impelement __next__ method rather than next():
+
+        https://www.python.org/dev/peps/pep-3114/
     """
     def __init__(self):
-        pass
+        self.first = None
+        self.N = 0
 
 
     def __iter__(self):
-        pass
+        return self
+
+
+    def isEmpty(self):
+        return self.first is None # self.N == 0
+
+
+    def getSize(self):
+        return self.N
+
+
+    def add(self, item):
+        new_node = Node()
+        new_node.setItem(item)
+        new_node.setNext(self.first)
+        self.first = new_node
+        self.N += 1
+
+
+    def __next__(self):
+        if not self.isEmpty():
+            data = self.first.getItem()
+            self.first = self.first.getNext()
+            return data
+        else:
+            raise StopIteration()
 
 
 class Queue():
@@ -112,7 +142,7 @@ class Queue():
 
 
 if __name__ == '__main__':
-    stack = Stack()
+    # stack = Stack()
     tobe = ('to', 'be', 'or', 'not', 'to', '-', 'be', '-', '-', 'that', '-', '-', '-', 'is')
 
     for t in tobe:
@@ -132,3 +162,10 @@ if __name__ == '__main__':
             queue.enqueue(t)
 
     print('{0} left on queue'.format(queue.getSize()))
+
+    bag = Bag()
+    for t in tobe:
+        bag.add(t)
+
+    for _ in bag:
+        print(_)
