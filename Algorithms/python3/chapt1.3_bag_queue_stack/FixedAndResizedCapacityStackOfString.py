@@ -63,9 +63,7 @@ class FixCapacityStack2():
 
 
     def push(self, item):
-        self.data.append(item)
-        if len(self.data) > self.size:
-            self.data[:1] = []
+        len(self.data) > size or self.data.append(item)
 
 
     def pop(self):
