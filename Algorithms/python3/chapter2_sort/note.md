@@ -94,6 +94,22 @@
 ## 希尔排序
 一种基于插入排序的快速的排序算法，*加速版插入排序*。插入排序慢是因为它只交换相邻的元素，也就是说新加入的元素只能一步一步地到达它的最终位置。
 
+## 归并排序
+### Top-down mergesort
+It is one of the best-known examples of the utility of the *divide-and-conquer* paradigm for efficient 
+algorithm design. An inductive proof that the algorithm sorts the array: if it sorts the two subarrays, 
+it sorts the whole array, by merging together the subarrays.
+
+The sort code simply provides an organized way to sequence the calls to the `merge()` method. This 
+insight is useful.
+
+#### mid index:
+* `mid = lo + (hi - lo) / 2`
+* `mid = length / 2 - 1`
+
+
+
 ## TODO:
 1. 从标准输入读取数据
 2. 数据可视化
+3. 打印算法执行过程， 比如 *Top-down mergesort call trace*
