@@ -74,6 +74,8 @@ def shellSort(datas=[]):
 
 def mergeSort(datas=[]):
     """
+    递归实现的归并排序是算法设计中“分治思想”的典型应用。将一个大问题分割成小问题分别解决，然后用所有小问题的答案解决整个大问题。尽管我们考虑的问题是
+    归并两个大数组，实际上我们归并的数组大多数都非常小。
     优点：
         任意长度为Ｎ的数组归并排序所需的时间和NlogN成正比，可以用归并排序百万级的数据。我们只需要比遍历整个数组多个
         对数因子的时间就能将一个庞大的数组排序。
@@ -112,6 +114,47 @@ def mergeSort(datas=[]):
     _mergeSort(datas, lo, hi)
 
 
+def mergeSortBU(data=[]):
+    """
+    自底向上的归并排序比标准的递归实现的归并排序所需的代码量更少。这种排序比较适合用链表组织的数据。
+    """
+    def _merge(_data, lo, mid, hi):
+        auxiliary = copy.copy(_data)
+        _lo = lo
+        _hi = mid + 1
+        for pivot in range(lo, hi+1):
+            if _lo > mid:
+                _data[pivot] = auxiliary[_hi]
+                _hi += 1
+            elif _hi > hi:
+                _data[pivot] = auxiliary[_lo]
+                _lo += 1
+            elif Utils.lessequal(auxiliary[_lo], auxiliary[_hi]):
+                _data[pivot] = auxiliary[_lo]
+                _lo += 1
+            else:
+                _data[pivot] = auxiliary[_hi]
+                _hi += 1
+
+    def _mergeSort(_data, lo, hi):
+        subArraySize = 1 # 先两两合并，把每个元素当成长度为１的数组。
+        length = len(_data)
+        while subArraySize < length:
+            _lo = 0
+            while _lo < length-subArraySize:
+                _hi = min(subArraySize*2+_lo-1, hi)
+                _mid = _lo + int((_hi-_lo)/2)
+                # print(subArraySize, _lo, _mid, _hi)
+                _merge(_data, _lo, _mid, _hi)
+                _lo = _lo + subArraySize * 2
+
+            subArraySize = subArraySize * 2
+
+    hi = len(data) - 1
+    lo = 0
+    _mergeSort(data, lo, hi)
+
+
 
 if __name__ == '__main__':
     datas = ['S', 'O', 'R', 'T', 'E', 'X', 'A', 'M', 'P', 'L', 'E']
@@ -120,5 +163,5 @@ if __name__ == '__main__':
     # selectionSort(datas)
     # insertionSort(datas)
     # shellSort(datas)
-    mergeSort(mergeSortData)
+    mergeSortBU(mergeSortData)
     Utils.show(mergeSortData)
