@@ -155,13 +155,44 @@ def mergeSortBU(data=[]):
     _mergeSort(data, lo, hi)
 
 
+def partition(data, lo, hi):
+    if len(data) <= 0:
+        return -1 
+
+    if lo > hi:
+        return -1
+
+    pivot = lo
+    left, right = lo+1, hi
+    while True:
+        while data[left] < data[pivot]:
+            left += 1
+            if left == hi:
+                break
+
+        while data[right] > data[pivot]:
+            right -= 1
+            if right == lo: # 当right == lo时，切分元素刚好是最小的元素，不用换位置。
+                break
+
+        if left < right:
+            Utils.exchange(data, left, right)
+        else:
+            break
+
+    Utils.exchange(data, pivot, right) # exchange data[pivot] with data[right]
+    return right
+
+
 
 if __name__ == '__main__':
     datas = ['S', 'O', 'R', 'T', 'E', 'X', 'A', 'M', 'P', 'L', 'E']
     mergeData = ['E', 'E', 'G', 'M', 'R', 'A', 'C', 'E', 'R', 'T']
     mergeSortData = ['M', 'E', 'R', 'G', 'S', 'O', 'R', 'T', 'E', 'X', 'A', 'M', 'P', 'L', 'E']
+    partitionData = ['K', 'R', 'A', 'T', 'E', 'L', 'E', 'P', 'U', 'I', 'M', 'Q', 'C', 'X', 'O', 'S']
     # selectionSort(datas)
     # insertionSort(datas)
     # shellSort(datas)
-    mergeSortBU(mergeSortData)
-    Utils.show(mergeSortData)
+    # mergeSortBU(mergeSortData)
+    partition(partitionData, 0, len(partitionData)-1)
+    Utils.show(partitionData)
