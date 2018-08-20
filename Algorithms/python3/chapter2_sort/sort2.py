@@ -155,6 +155,7 @@ def partition(data, lo, hi):
 
         data[i], data[j] = data[j], data[i]
 
+    # data[j] is less than data[lo] here.
     data[lo], data[j] = data[j], data[lo]
 
     return j
